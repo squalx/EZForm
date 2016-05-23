@@ -97,10 +97,15 @@ EZFormValidateEmailFormat(NSString *value)
 	return NO;
     }
     
-    // Check for "." char within domain, but not the first character
-    range = [domain rangeOfString:@"."];
+    // Check for last "." char within domain, make sure it is not the first character
+    range = [domain rangeOfString:@"." options:NSBackwardsSearch];
     if (range.location == NSNotFound || range.location < 1) {
 	return NO;
+    }
+    
+    // Check for a minimum of 2 chars following the last "."
+    if (domain.length - range.location < 3) {
+    return NO;
     }
     
     // Check for ".." char within domain
